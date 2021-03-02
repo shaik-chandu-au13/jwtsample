@@ -28,6 +28,23 @@ app.get('/users',(req,res)=>{
 
     })
 })
+app.post('/register',async (req,res)=>{
+    var hashpassword = bcrypt.hashSync(req.body.password,8);
+    var user = await User.findOne({email:req.body.email});
+    if(user){
+        res.status(400).send("user already exist");
+    }else{
+    User.create({
+        name:req.body.name,
+        phone:req.body.phone,
+        email:req.body.email,
+        password:hashpassword
+        
+    },(err,user)=>{
+        if(err) throw err;
+        res.status(200).send('Registration Success')
+    })}
+})
 app.listen(port,()=>{
     console.log("listening on port: 5000")
 })
