@@ -45,6 +45,10 @@ app.post('/register',async (req,res)=>{
         res.status(200).send('Registration Success')
     })}
 })
+app.get('/chart',(req,res)=>{
+    res.sendFile(__dirname + "/chart.html");
+    // res.sendFile(__dirname + "/style.css")
+})
 app.listen(port,()=>{
     console.log("listening on port: 5000")
 })
