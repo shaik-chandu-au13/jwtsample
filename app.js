@@ -34,17 +34,20 @@ app.get('/users',(req,res)=>{
 
     })
 })
-app.post('/register',async (req,res)=>{
+app.post('/signup',async (req,res)=>{
     var hashpassword = bcrypt.hashSync(req.body.password,8);
+    var hashpasswordConfirmation = bcrypt.hashSync(req.body.passwordConfirmation,8);
     var user = await User.findOne({email:req.body.email});
     if(user){
         res.status(400).send("user already exist");
     }else{
     User.create({
-        name:req.body.name,
-        phone:req.body.phone,
+        firstname:req.body.firstname,
+        lastname:req.body.lastname,
         email:req.body.email,
-        password:hashpassword
+        phone:req.body.phone,        
+        password:hashpassword,
+        passwordConfirmation:hashpasswordConfirmation
         
     },(err,user)=>{
         if(err) throw err;
