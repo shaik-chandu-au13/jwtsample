@@ -13,9 +13,15 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "/")));
 
-app.get('/signup',(req,res)=>{
-    res.sendFile(__dirname + "/signup.html");
-    // res.sendFile(__dirname + "/style.css")
+app.set('view engine','hbs')
+
+
+app.get('/signup',(req, res) =>{
+    res.render('signup')
+})
+
+app.get('/login',(req, res) =>{
+    res.render('login')
 })
 
 app.get('/',(req,res)=>{
