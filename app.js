@@ -7,7 +7,11 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const User = require('./model/UserSchema');
+const  session = require('express-session');
+const auth = require('./controller/auth');
+console.log(User)
 
+app.use(session({ secret: 'sess_secret', cookie: { maxAge: 60000 }}));
 app.use(cors())
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
@@ -20,9 +24,7 @@ app.get('/signup',(req, res) =>{
     res.render('signup')
 })
 
-app.get('/login',(req, res) =>{
-    res.render('login')
-})
+
 
 app.get('/',(req,res)=>{
     res.send("hello world")
@@ -51,10 +53,43 @@ app.post('/signup',async (req,res)=>{
         
     },(err,user)=>{
         if(err) throw err;
-        res.status(200).send('Registration Success')
+        res.status(200).redirect('/login')
+        
     })}
 })
-app.get('/chart',(req,res)=>{
+
+app.get('/login',(req, res) =>{
+    res.render('login')
+})
+
+app.post('/login',(req, res)=>{
+        console.log(req.body)
+        User.findOne({email:req.body.email},(err,data) => {
+        if(err) return res.status(500).send("Error while Login");
+        // in case user not found
+        console.log(data);
+        if(!data) return res.redirect('/login');
+        else{
+            // compare password if user found
+            // (userinput, password in db)
+            const passIsValid = bcrypt.compareSync(req.body.password,data.password);
+            // if password not match
+            if(!passIsValid) return res.redirect('/login');
+            // generate token
+            // (tell on which unqiue key, secret, expire time(3600 1 hrs))
+            req.session.userID=data._id
+            return res.redirect('/userDetail')
+            
+        }
+    })
+
+})
+app.get('/userDetail',auth ,(req, res) => {
+    User.findOne({_id:req.session.userID},(e,d)=>{
+        return res.json(d)
+    })
+})
+app.get('/chart',auth,(req,res)=>{
     res.sendFile(__dirname + "/chart.html");
     // res.sendFile(__dirname + "/style.css")
 })
