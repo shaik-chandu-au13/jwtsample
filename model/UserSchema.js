@@ -11,6 +11,7 @@ var UserSchema = new mongoose.Schema({
     
 })
 
+
 //define collection name and design of collection
 
 mongoose.model('LoginUser',UserSchema);
