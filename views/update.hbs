@@ -8,7 +8,15 @@
 </head>
 <body>
     <form action="/update?id={{id}}" method="POST">
-        <input type="text" placeholder="category" name="catogery" value="{{catogery}}" >
+        <label for="category">category:</label>
+        <select id="category" name="catogery" value="{{catogery}}">
+            <option value="fuel">fuel</option>
+            <option value="rent">rent</option>
+            <option value="bills">bills</option>
+            <option value="stocks">stocks</option>
+            <option value="savings">savings</option>
+        </select>
+        {{!-- <input type="text" placeholder="category" name="catogery" value="{{catogery}}"  > --}}
         <input type="text" placeholder="price" name="amount" value="{{amount}}"  >
         <button type="submit">Submit</button>
     </form>

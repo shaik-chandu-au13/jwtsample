@@ -13,7 +13,7 @@ const Price = require('./model/priceschema');
 
 //------------------------------------------- middlewares----------------------------------------------------------------
 
-app.use(session({ secret: 'sess_secret', cookie: { maxAge: 60000 }}));
+app.use(session({ secret: 'sess_secret', cookie: { maxAge: 600000 }}));
 app.use(cors())
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
@@ -112,17 +112,51 @@ app.post('/add',auth, (req, res) => {
     
   })
 
-  app.get('/display', (req, res) => {
+  app.get('/display', auth,async(req, res) => {
+      try{
+          let data=await Price.find({email:req.session.email})
+          let food=await Price.find({catogery:"food",email:req.session.email})
+          let foodamount=0
+          for (let i=0 ;i<food.length;i++){
+              foodamount+=food[i].amount
+          }
+          console.log(data)
+          console.log(foodamount)
+          let fuel=await Price.find({catogery:"fuel",email:req.session.email})
+        let  fuelamount=0
+        for (let i=0 ;i<fuel.length;i++){
+            fuelamount+=fuel[i].amount
+        }
+        console.log(fuelamount)
+          let bills=await Price.find({catogery:"bills",email:req.session.email})
+          let  billsamount=0
+        for (let i=0 ;i<bills.length;i++){
+            billsamount+=bills[i].amount
+        }
+          let stocks=await Price.find({catogery:"stocks",email:req.session.email})
+          let  stocksamount=0
+          for (let i=0 ;i<stocks.length;i++){
+            stocksamount+=stocks[i].amount
+          }
+          let savings=await Price.find({catogery:"savings",email:req.session.email})
+          let  savingsamount=0
+          for (let i=0 ;i<savings.length;i++){
+            savingsamount+=savings[i].amount
+          }
+          let rent=await Price.find({catogery:"rent",email:req.session.email})
+          let  rentamount=0
+          for (let i=0 ;i<rent.length;i++){
+            rentamount+=rent[i].amount
+          }
+        return res.render("index",{
+            quotes:data,food:foodamount,fuel:fuelamount,rent:rentamount,bills:billsamount,stocks:stocksamount,savings:savingsamount
+        })
+      }
+      catch(e){
+          return res.send(e.message)
+      }
 
     // 
-    Price.find({email:req.session.email},(err,data) => {
-        if(err) return res.status(500).send("Error while Login");
-        // in case user not found
-        console.log(data);
-        res.render('index', { quotes: data })
-
-      
-  })
 })
 // --------------------------------------------------delete----------------
 
@@ -151,7 +185,8 @@ app.post('/update',auth,async (req,res)=>{
     let id = mongoose.Types.ObjectId(req.query.id)
     let find = await Price.find({_id:id})
     // console.log(find)
-    // console.log([...find[0]])
+    console.log((find[0]),"sdfsdfsd")
+    console.log(req.body,"body")
     find[0].catogery=req.body.catogery
     find[0].amount=req.body.amount
     await find[0].save()

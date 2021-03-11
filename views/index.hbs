@@ -84,10 +84,19 @@
     <h1>List of transactions</h1>
 
     <form action="/add" method="POST">
-        <input type="text" placeholder="category" name="category" />
+        <label for="category">category:</label>
+        <select id="category" name="category">
+            <option value="fuel">fuel</option>
+            <option value="rent">rent</option>
+            <option value="bills">bills</option>
+            <option value="stocks">stocks</option>
+            <option value="savings">savings</option>
+        </select>
+        {{!-- <input type="text" placeholder="category" name="category" /> --}}
         <input type="text" placeholder="price" name="price" />
         <button type="submit">Submit</button>
     </form>
+    
     <br><br><br>
     <table>
         <thead>
@@ -103,20 +112,21 @@
                 <td>{{this.amount}}</td>
                 {{!-- <td>{{this.createdAt}}</td> --}}
 
-                <td><button id="update-button" class="button button1"><a href="/Update?id={{this._id}}">Update</a></button></td>
-                <td><button id="delete-button" class="button button2"><a href="/delete?id={{this._id}}">delete</a></button></td>
+                <td><button id="update-button" class="button button1"><a
+                            href="/Update?id={{this._id}}">Update</a></button></td>
+                <td><button id="delete-button" class="button button2"><a
+                            href="/delete?id={{this._id}}">delete</a></button></td>
             </tr>
             {{/each}}
         </tbody>
     </table>
 
 
-    <br><br><br><br><br><br><br><br>
-
     <h3>Chart implementation</h3>
     <div class="container">
         <canvas id="myChart" width="100" height="50"></canvas>
     </div>
+    <div id="#clock"></div>
     <script>
         var ctx = document.getElementById('myChart').getContext('2d');
         var myChart = new Chart(ctx, {
@@ -125,7 +135,7 @@
                 labels: ['food', 'fuel', 'rent', 'bills', 'stocks', 'savings'],
                 datasets: [{
                     label: 'expenses',
-                    data: [30, 20, 10, 25, 10, 20],
+                    data: [{{food}}, {{fuel}}, {{rent}}, {{bills}}, {{stocks}}, {{savings}}],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
