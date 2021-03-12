@@ -10,6 +10,8 @@ const User = require('./model/UserSchema');
 const  session = require('express-session');
 const auth = require('./controller/auth');
 const Price = require('./model/priceschema');
+const { loginvalidate, registervalidate } = require("./validation");
+
 
 //------------------------------------------- middlewares----------------------------------------------------------------
 
@@ -38,6 +40,8 @@ app.get('/signup',(req, res) =>{
 // ------------------------------------------- post  signup -------------------------------------------
 
 app.post('/signup',async (req,res)=>{
+    const { error } = registervalidate(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
     var hashpassword = bcrypt.hashSync(req.body.password,8);
     var hashpasswordConfirmation = bcrypt.hashSync(req.body.passwordConfirmation,8);
     var user = await User.findOne({email:req.body.email});
@@ -225,7 +229,11 @@ app.get('/users',(req,res)=>{
 })
 
 // ------------------------------------------- LISTEN -------------------------------------------
-
+app.get('/logout',(req,res)=>{
+    req.session.email=""
+    req.session.userID=""
+    res.redirect('/login')
+})
 
 app.listen(port,()=>{
     console.log("listening on port: 5000")

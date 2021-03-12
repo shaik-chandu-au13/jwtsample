@@ -82,10 +82,12 @@
 <body>
 
     <h1>List of transactions</h1>
+    <button><a href="/logout">logout</a></button>
 
     <form action="/add" method="POST">
         <label for="category">category:</label>
         <select id="category" name="category">
+            <option value="food">food</option>
             <option value="fuel">fuel</option>
             <option value="rent">rent</option>
             <option value="bills">bills</option>

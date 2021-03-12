@@ -18,7 +18,7 @@ update.addEventListener('click', _ => {
     .then(response => {
       window.location.reload(true)
     })
-console.log(body)
+
 })
 
 
