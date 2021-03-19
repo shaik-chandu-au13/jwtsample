@@ -3,8 +3,9 @@ const registervalidate = (data) => {
 	console.log(data)
 	const schema = Joi.object({
 		firstname: Joi.string().max(10).required(),
-		lastname: Joi.string().min(1),
-		email: Joi.string().min(6).required().email(),
+		lastname: Joi.string(),
+		
+		email: Joi.string().email({ tlds: { allow: false } }),
         phone: Joi.number().min(2).required(),
         
         password:Joi.string().required(),

@@ -6,11 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>my chart</title>
+     <link rel="icon" href="https://res.cloudinary.com/dkj7ixkjc/image/upload/v1615231229/mypoche_iid3op.png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
+    
 </head>
 <style>
     table {
@@ -77,12 +79,27 @@
         text-decoration: none;
         color: white;
     }
+    .logout{
+        position: absolute;
+        right: 20px;
+        top: 20px;
+            background-color: rgb(255, 255, 255);
+        color: black;
+        border: 2px solid #09e7f7;
+        border-radius: 8px
+    }
+
+    .logout:hover {
+        background-color: #e6c224;
+        color: white;
+    }
+    }
 </style>
 
 <body>
 
     <h1>List of transactions</h1>
-    <button><a href="/logout">logout</a></button>
+    <button class="logout"><a href="/logout">logout</a></button>
 
     <form action="/add" method="POST">
         <label for="category">category:</label>
